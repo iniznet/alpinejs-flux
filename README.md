@@ -28,9 +28,9 @@ Alpine.plugin(() => {
     flux(Alpine, {
         "translate-y-2": [
             "transition duration-300", // transition
-            "opacity-0 scale-90", // enter-start | leave-end
-            "opacity-100 scale-100", // enter-end | leave-start
-            "ease-out", "ease-in" // enter | leave
+            "opacity-0 scale-90 translate-y-2", // enter-start | leave-end
+            "opacity-100 scale-100 translate-y-0", // enter-end | leave-start
+            "ease-out", "ease-in" // enter , leave
         ],
         rotate: {
             "enter": "transition-all ease-in-out transform duration-300",
