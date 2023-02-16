@@ -8,15 +8,19 @@ export default function (Alpine, Config) {
 
   if (Array.isArray(arrayOrString)) {
    attrs = parseArray(arrayOrString);
-  } else if (typeof arrayOrString === "string" && arrayOrString in Config) {
-   const transitions = Config[arrayOrString];
+  } else if (typeof arrayOrString === "string") {
+   const transitions = Config[arrayOrString] || null;
+
+   if (!transitions) {
+    throw new Error(`x-flux alias '${arrayOrString}' not found in config`);
+   }
 
    if (Array.isArray(transitions)) {
     attrs = parseArray(transitions);
-   } else if (typeof transitions === "object") {
+   }
+   
+   if (typeof transitions === "object") {
     attrs = parseObject(transitions);
-   } else {
-    throw new Error(`x-flux alias '${arrayOrString}' not found in config`);
    }
   } else {
    throw new Error("x-flux doesn't correctly defined");
