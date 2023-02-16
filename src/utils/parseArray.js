@@ -1,10 +1,6 @@
-export default function (
- transition,
- enterStart,
- enterEnd,
- timingsIn = "",
- timingsOut = ""
-) {
+export default function (transitions) {
+ const [transition, enterStart, enterEnd, timingsIn = "", timingsOut = ""] = transitions;
+
  const transitionEnter = `${transition} ${timingsIn}`.trim();
  const transitionLeave = `${transition} ${timingsOut}`.trim();
 
