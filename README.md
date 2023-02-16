@@ -32,7 +32,7 @@ Alpine.plugin(() => {
             "transition duration-300", // transition
             "opacity-0 scale-90 translate-y-2", // enter-start | leave-end
             "opacity-100 scale-100 translate-y-0", // enter-end | leave-start
-            "ease-out", "ease-in" // enter , leave
+            "ease-out", "ease-in" // enter, leave
         ],
         rotate: {
             "enter": "transition-all ease-in-out transform duration-300",
@@ -50,13 +50,21 @@ Alpine.start()
 
 ## Example
 
+There's three ways to use this plugin.
+
 ```html
 <section x-data="{ show: false }">
     <button @click="show = !show">Toggle</button>
 
+    <!-- You can call the defined template by calling the name of the config -->
     <div x-show="show" x-flux="'translate-y-2'">Array from Config</div>
     <div x-show="show" x-flux="'rotate'">Object from Config</div>
 
+    <!-- Or you can use the magic -->
+    <div x-show="show" x-init="$translateY2">Array from Config</div>
+    <div x-show="show" x-init="$rotate">Object from Config</div>
+
+    <!-- Or you can define it inline -->
     <div x-show="show" x-flux="[
         'transition duration-300',
         'opacity-0 scale-90',
