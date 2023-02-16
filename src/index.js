@@ -3,8 +3,6 @@ import parseTransitions from "./core/parseTransitions";
 import convertCamelCase from "./utils/convertCamelCase";
 
 export default function ( Alpine, Config ) {
-    const magicNames = ['flux', ...Object.keys( Config )];
-
     Alpine.directive( "flux", ( el, { expression }, { evaluate } ) => {
         const arrayOrTemplateName = evaluate( expression );
         const template =
@@ -15,7 +13,7 @@ export default function ( Alpine, Config ) {
         applyTransitions( el, arrayOrTemplateName, transitions )
     } ).before( "transition" );
 
-    for ( const templateName of magicNames ) {
+    for ( const templateName of Object.keys( Config ) ) {
         const validName = convertCamelCase( templateName );
 
         Alpine.magic( validName, ( el ) => () => {
@@ -25,4 +23,11 @@ export default function ( Alpine, Config ) {
             applyTransitions( el, templateName, transitions )
         } );
     }
+
+    Alpine.magic( 'flux', ( el ) => ( templateName = '' ) => {
+        const template = Config[templateName] || null;
+        const transitions = parseTransitions( templateName, template );
+
+        applyTransitions( el, templateName, transitions )
+    } );
 }
