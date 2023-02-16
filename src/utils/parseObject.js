@@ -1,11 +1,11 @@
-export default function (transitions) {
- let attributes = {};
+export default function ( transitions ) {
+    let attributes = {};
 
- for (const key in transitions) {
-  const classes = transitions[key];
+    for ( const key in transitions ) {
+        const classes = transitions[key];
 
-  attributes[`x-transition:${key}`] = classes;
- }
+        attributes[`x-transition:${key}`] = classes;
+    }
 
- return attributes;
+    return attributes;
 }

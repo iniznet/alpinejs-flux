@@ -1,13 +1,16 @@
 {
   "name": "alpinejs-flux",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simplifies x-transition when applying CSS classes",
   "keywords": [
     "Alpine",
     "Alpine JS",
     "Alpine JS Plugin",
-    "Alpine JS Plugins"
+    "Alpine JS Plugins",
+    "Alpine JS Flux"
   ],
+  "author": "Yusuf Fauzan",
+  "license": "MIT",
   "module": "dist/flux.esm.js",
   "unpkg": "dist/flux.min.js",
   "scripts": {

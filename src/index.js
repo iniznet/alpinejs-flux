@@ -1,29 +1,28 @@
-import parseArray from "./utils/parseArray";
-import parseObject from "./utils/parseObject";
+import applyTransitions from "./core/applyTransitions";
+import parseTransitions from "./core/parseTransitions";
+import convertCamelCase from "./utils/convertCamelCase";
 
-export default function (Alpine, Config) {
- Alpine.directive("flux", (el, { expression }, { evaluate }) => {
-  const arrayOrString = evaluate(expression);
-  const transitions =
-   (Array.isArray(arrayOrString) ? arrayOrString : Config[arrayOrString]) ||
-   null;
+export default function ( Alpine, Config ) {
+    const magicNames = ['flux', ...Object.keys( Config )];
 
-  let attributes = {};
+    Alpine.directive( "flux", ( el, { expression }, { evaluate } ) => {
+        const arrayOrTemplateName = evaluate( expression );
+        const template =
+            ( Array.isArray( arrayOrTemplateName ) ? arrayOrTemplateName : Config[arrayOrTemplateName] ) ||
+            null;
+        const transitions = parseTransitions( arrayOrTemplateName, template );
 
-  if (!transitions) {
-   throw new Error("x-flux: No transitions found for " + expression);
-  }
+        applyTransitions( el, arrayOrTemplateName, transitions )
+    } ).before( "transition" );
 
-  if (Object.prototype.toString.call(transitions) === "[object Object]") {
-   attributes = parseObject(transitions);
-  } else {
-   attributes = parseArray(transitions);
-  }
+    for ( const templateName of magicNames ) {
+        const validName = convertCamelCase( templateName );
 
-  Object.entries(attributes).forEach(([key, value]) => {
-   el.setAttribute(key, value);
-  });
+        Alpine.magic( validName, ( el ) => () => {
+            const template = Config[templateName] || null;
+            const transitions = parseTransitions( templateName, template );
 
-  el.removeAttribute("x-flux");
- }).before("transition");
+            applyTransitions( el, templateName, transitions )
+        } );
+    }
 }
