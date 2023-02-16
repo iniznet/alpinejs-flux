@@ -4,29 +4,23 @@ import parseObject from "./utils/parseObject";
 export default function (Alpine, Config) {
  Alpine.directive("flux", (el, { expression }, { evaluate }) => {
   const arrayOrString = evaluate(expression);
-  let attrs = {};
+  const transitions =
+   (Array.isArray(arrayOrString) ? arrayOrString : Config[arrayOrString]) ||
+   null;
 
-  if (Array.isArray(arrayOrString)) {
-   attrs = parseArray(arrayOrString);
-  } else if (typeof arrayOrString === "string") {
-   const transitions = Config[arrayOrString] || null;
+  let attributes = {};
 
-   if (!transitions) {
-    throw new Error(`x-flux alias '${arrayOrString}' not found in config`);
-   }
-
-   if (Array.isArray(transitions)) {
-    attrs = parseArray(transitions);
-   }
-   
-   if (typeof transitions === "object") {
-    attrs = parseObject(transitions);
-   }
-  } else {
-   throw new Error("x-flux doesn't correctly defined");
+  if (!transitions) {
+   throw new Error("x-flux: Invalid expression");
   }
 
-  Object.entries(attrs).forEach(([key, value]) => {
+  if (Object.prototype.toString.call(transitions) === "[object Object]") {
+   attributes = parseObject(transitions);
+  } else {
+   attributes = parseArray(transitions);
+  }
+
+  Object.entries(attributes).forEach(([key, value]) => {
    el.setAttribute(key, value);
   });
 
