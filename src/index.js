@@ -11,7 +11,7 @@ export default function (Alpine, Config) {
   let attributes = {};
 
   if (!transitions) {
-   throw new Error("x-flux: Invalid expression");
+   throw new Error("x-flux: No transitions found for " + expression);
   }
 
   if (Object.prototype.toString.call(transitions) === "[object Object]") {
