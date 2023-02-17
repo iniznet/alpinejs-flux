@@ -1,6 +1,6 @@
 # alpinejs-flux
 
-Simplifies x-transition when applying CSS classes.
+Simplifies the process of applying CSS classes with x-transition as a template and makes them reusable within single attribute.
 
 It requires alpinejs v3.11.0 or higher.
 
