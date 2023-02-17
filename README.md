@@ -48,12 +48,17 @@ Alpine.plugin(() => {
 Alpine.start()
 ```
 
-## Example
+## Usage
 
-There's three ways to use this plugin.
+There's several ways to use this plugin.
 
 ```html
-<section x-data="{ show: false }">
+<section x-data="{ show: false, template: [
+        'transition duration-300',
+        'opacity-0 scale-90',
+        'opacity-100 scale-100',
+        'ease-out', 'ease-in',
+    ] }">
     <button @click="show = !show">Toggle</button>
 
     <!-- You can call the defined template by calling the name of the config -->
@@ -63,14 +68,21 @@ There's three ways to use this plugin.
     <!-- Or you can use the magic -->
     <div x-show="show" x-init="$translateY2">Array from Config</div>
     <div x-show="show" x-init="$rotate">Object from Config</div>
+    <div x-show="show" x-init="$flux('translate-y-2')">Array from Config</div>
 
-    <!-- Or you can define it inline -->
+    <!-- You can define it inline -->
     <div x-show="show" x-flux="[
         'transition duration-300',
         'opacity-0 scale-90',
         'opacity-100 scale-100',
         'ease-out', 'ease-in',
     ]">Array Expression</div>
+
+    <!-- You can define template with $flux magic, the name should be kebab-case when defining -->
+    <div x-show="show" x-init="$flux('opacity-scale', template)">Array Expression</div>
+
+    <!-- by default after defining it will applied to the element automatically, you can pass false as third argument to only register -->
+    <div x-show="show" x-init="$flux('opacity-scale', template, false)">Array Expression</div>
 </section>
 ```
 

@@ -1,33 +1,44 @@
 import applyTransitions from "./core/applyTransitions";
-import parseTransitions from "./core/parseTransitions";
+import registerMagic from "./core/registerMagic";
 import convertCamelCase from "./utils/convertCamelCase";
 
 export default function ( Alpine, Config ) {
+
     Alpine.directive( "flux", ( el, { expression }, { evaluate } ) => {
         const arrayOrTemplateName = evaluate( expression );
         const template =
-            ( Array.isArray( arrayOrTemplateName ) ? arrayOrTemplateName : Config[arrayOrTemplateName] ) ||
-            null;
-        const transitions = parseTransitions( arrayOrTemplateName, template );
+            ( Array.isArray( arrayOrTemplateName )
+                ? arrayOrTemplateName
+                : Config[arrayOrTemplateName] ) || null;
 
-        applyTransitions( el, arrayOrTemplateName, transitions )
+        applyTransitions( el, arrayOrTemplateName, template );
     } ).before( "transition" );
 
     for ( const templateName of Object.keys( Config ) ) {
         const validName = convertCamelCase( templateName );
+        const template = Config[templateName] || null;
 
-        Alpine.magic( validName, ( el ) => () => {
-            const template = Config[templateName] || null;
-            const transitions = parseTransitions( templateName, template );
-
-            applyTransitions( el, templateName, transitions )
-        } );
+        registerMagic( Alpine, validName, templateName, template );
     }
 
-    Alpine.magic( 'flux', ( el ) => ( templateName = '' ) => {
-        const template = Config[templateName] || null;
-        const transitions = parseTransitions( templateName, template );
+    Alpine.magic(
+        "flux",
+        ( el ) =>
+            ( templateName = "", newTemplate = null, applyToElement = true ) => {
+                if ( newTemplate ) {
+                    const validName = convertCamelCase( templateName );
 
-        applyTransitions( el, templateName, transitions )
-    } );
+                    Config[templateName] = newTemplate;
+                    registerMagic( Alpine, validName, templateName, newTemplate );
+                }
+
+                if ( !applyToElement ) {
+                    return;
+                }
+                
+                const template = Config[templateName] || null;
+                
+                applyTransitions( el, templateName, template );
+            }
+    );
 }
