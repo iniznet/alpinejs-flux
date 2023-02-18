@@ -11,6 +11,7 @@
   ],
   "author": "Yusuf Fauzan",
   "license": "MIT",
+  "repository": "https://github.com/iniznet/alpinejs-flux.git",
   "module": "dist/flux.esm.js",
   "unpkg": "dist/flux.min.js",
   "scripts": {

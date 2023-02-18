@@ -6,12 +6,10 @@ export default function ( Alpine, Config ) {
 
     Alpine.directive( "flux", ( el, { expression }, { evaluate } ) => {
         const arrayOrTemplateName = evaluate( expression );
-        const template =
-            ( Array.isArray( arrayOrTemplateName )
-                ? arrayOrTemplateName
-                : Config[arrayOrTemplateName] ) || null;
+        const templateName = Array.isArray( arrayOrTemplateName ) ? "" : arrayOrTemplateName;
+        const template = templateName ? Config[templateName] : arrayOrTemplateName;
 
-        applyTransitions( el, arrayOrTemplateName, template );
+        applyTransitions( el, templateName, template );
     } ).before( "transition" );
 
     for ( const templateName of Object.keys( Config ) ) {
