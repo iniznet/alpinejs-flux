@@ -1,10 +1,10 @@
 export default function ( transitions ) {
     let attributes = {};
 
-    for ( const key in transitions ) {
-        const classes = transitions[key];
+    for ( const directiveValue in transitions ) {
+        const classes = transitions[directiveValue];
 
-        attributes[`x-transition:${key}`] = classes;
+        attributes[`x-transition:${directiveValue}`] = classes;
     }
 
     return attributes;

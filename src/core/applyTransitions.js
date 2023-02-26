@@ -7,8 +7,10 @@ export default function ( element, templateName, template ) {
         throw new Error( "x-flux: No transitions found for " + templateName );
     }
 
-    for ( const directive of Object.keys( transitions ) ) {
-        element.setAttribute( directive, transitions[directive] );
+    for ( const directive in transitions ) {
+        const classes = transitions[directive];
+
+        element.setAttribute( directive, classes );
     }
 
     element.removeAttribute( "x-flux" );

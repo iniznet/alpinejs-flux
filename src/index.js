@@ -3,16 +3,15 @@ import registerMagic from "./core/registerMagic";
 import convertCamelCase from "./utils/convertCamelCase";
 
 export default function ( Alpine, Config ) {
-
-    Alpine.directive( "flux", ( el, { expression }, { evaluate } ) => {
+    Alpine.directive( "flux", ( element, { expression }, { evaluate } ) => {
         const arrayOrTemplateName = evaluate( expression );
         const templateName = Array.isArray( arrayOrTemplateName ) ? "" : arrayOrTemplateName;
         const template = templateName ? Config[templateName] : arrayOrTemplateName;
 
-        applyTransitions( el, templateName, template );
+        applyTransitions( element, templateName, template );
     } ).before( "transition" );
 
-    for ( const templateName of Object.keys( Config ) ) {
+    for ( const templateName in Config ) {
         const validName = convertCamelCase( templateName );
         const template = Config[templateName] || null;
 
@@ -21,12 +20,13 @@ export default function ( Alpine, Config ) {
 
     Alpine.magic(
         "flux",
-        ( el ) =>
+        ( element ) =>
             ( templateName = "", newTemplate = null, applyToElement = true ) => {
                 if ( newTemplate ) {
                     const validName = convertCamelCase( templateName );
 
                     Config[templateName] = newTemplate;
+
                     registerMagic( Alpine, validName, templateName, newTemplate );
                 }
 
@@ -36,7 +36,7 @@ export default function ( Alpine, Config ) {
                 
                 const template = Config[templateName] || null;
                 
-                applyTransitions( el, templateName, template );
+                applyTransitions( element, templateName, template );
             }
     );
 }
