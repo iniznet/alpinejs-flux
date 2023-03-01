@@ -110,9 +110,10 @@ Saya baru kepikiran membuatkannya dengan patch v1.2.0 karena saya hampir tidak p
 [Lihat kode v1.2.0](https://github.com/iniznet/alpinejs-flux/commit/117ea12b02c7912149353dc9b5b18fb87ee1dd79) | 
 [Atau komparasi perubahan v1.1.0 > v1.2.0](https://github.com/iniznet/alpinejs-flux/compare/v1.1.0...v1.2.0)
 
-Lalu saya akhiri dengan perubahan terakhir untuk membuat variable assigments menjadi lebih rapi di dalam directive `x-flux`
+Lalu saya akhiri dengan perubahan terakhir v1.2.1 dan v1.2.2 (belum rilis) untuk membuat variable assigments di dalam directive `x-flux` dan kode menjadi lebih rapi dan mudah dibaca.
 
 [Cek komparasi perubahan v1.2.0 > v1.2.1](https://github.com/iniznet/alpinejs-flux/compare/v1.2.0...v1.2.1)
+[Cek komparasi perubahan v1.2.1 > v1.2.2](https://github.com/iniznet/alpinejs-flux/compare/v1.2.0...master)
 
 ## Install
 
