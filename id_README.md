@@ -32,9 +32,9 @@ Dalam perancangan awal, saya hanya terpikirkan untuk membuat satu directive saja
 >Ekspresi Array</div>
 ```
 
-Setelah pengetesan, saya terpikirkan kalau ini apa bedanya dengan x-transition itu sendiri, masih sama saja menyalin dan tempel berulang kali dan terlebih lagi kalau ada elemen yang tipe transisi-nya berbeda misalnya ketika masuk elemennya berputar (rotate) dan ketika keluar perlahan menghilang (fade out), saya nantinya akan kembali menggunakan x-transition lagi. Jadi saya memutuskan untuk membuat sebuah konfigurasi yang dapat digunakan secara global dan dapat digunakan kembali di berbagai elemen.
+Setelah pembuatan dan pengetesan, saya terpikirkan kalau ini apa bedanya dengan x-transition itu sendiri, masih sama saja menyalin dan tempel berulang kali dan terlebih lagi kalau ada elemen yang tipe transisi masuk/keluarnya berbeda misalnya ketika masuk elemennya berputar (rotate) dan ketika keluar perlahan menghilang (fade out), saya nantinya harus kembali menggunakan x-transition lagi yang ingin saya hindari. Jadi saya memutuskan untuk membuat sebuah konfigurasi global untuk menyimpan template-template yang dapat digunakan kembali di berbagai elemen.
 
-Kita bisa mendefinisikan sebuah template transisi ketika menginisialisasi plugin ini:
+Kita bisa mendefinisikan sebuah template transisi ketika akan menginisialisasi plugin ini:
 
 ```js
 import Alpine from 'alpinejs'
@@ -114,6 +114,35 @@ Lalu saya akhiri dengan perubahan terakhir v1.2.1 dan v1.2.2 (belum rilis) untuk
 
 [Cek komparasi perubahan v1.2.0 > v1.2.1](https://github.com/iniznet/alpinejs-flux/compare/v1.2.0...v1.2.1)
 [Cek komparasi perubahan v1.2.1 > v1.2.2](https://github.com/iniznet/alpinejs-flux/compare/v1.2.0...master)
+
+Apa selanjutnya? saya terpikirkan untuk menyederhanakan cara mendefinisikan template lewat objek karena penulisannya mirip dengan si `x-transition` itu sendiri, untuk sekarang seperti ini:
+```js
+{
+    "enter": "transition-all ease-in-out transform duration-300",
+    "enter-start": "opacity-0 scale-90",
+    "enter-end": "opacity-100 scale-100 rotate-180",
+    "leave": "transition-all ease-in-out transform duration-300",
+    "leave-start": "opacity-100 scale-100",
+    "leave-end": "opacity-0 scale-90"
+}
+```
+
+Mungkin akan saya buat menjadi seperti ini:
+```js
+{
+    "transition": "transition-all ease-in-out transform duration-300",
+    "enter": [
+        "opacity-0 scale-90",
+        "opacity-100 scale-100 rotate-180"
+    ],
+    "leave": [
+        "opacity-100 scale-100",
+        "opacity-0 scale-90"
+    ]
+}
+```
+
+Itu masih berupa ide, saya belum menentukan apakah akan saya terapkan atau tidak.
 
 ## Install
 
