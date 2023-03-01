@@ -1,5 +1,7 @@
 # alpinejs-flux
 
+[English](README.md) | Indonesia
+
 Menyederhanakan proses penerapan kelas-kelas CSS dengan x-transition sebagai template yang dapat digunakan secara berulang kali dalam satu atribut.
 
 Diperlukan alpinejs v3.11.0 atau lebih tinggi.
