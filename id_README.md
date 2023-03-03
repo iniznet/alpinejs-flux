@@ -10,6 +10,8 @@ Diperlukan alpinejs v3.11.0 atau lebih tinggi.
 
 ## Perancangan
 
+Catatan: Dokumentasi API ada di paling bawah.
+
 Singkat apa itu API directive dan magic di alpinejs:
 - Directive adalah sebuah API dalam bentuk atribut yang biasa digunakan untuk memanipulasi elemen HTML yang dituju.
 - Magic adalah sebuah API properti atau method yang kapan saja dapat kita panggil hampir di semua tempat di dalam lingkungan alpinejs serta mereferensikan sumber elemen.
@@ -224,6 +226,78 @@ Ada beberapa cara untuk menggunakan plugin ini.
     <!-- Secara bawaan template yang dibuat akan otomatis di terapkan pada elemen, kamu bisa menonaktifkan ini dengan memberikan nilai false pada parameter ketiga -->
     <div x-show="show" x-init="$flux('opacity-scale', template, false)">Ekspresi Array</div>
 </section>
+```
+## API Docs
+
+### Directive `x-flux`
+
+Directive ini digunakan untuk membuat template secara inline, atau memanggil template yang sudah didefinisikan di konfigurasi.
+Inline dapat berupa array atau objek.
+
+Parameter | Tipe | Deskripsi
+--- | --- | ---
+`inlineTemplateOrName` | (`Array` atau `Object`) atau `String` | Template secara inline atau nama template yang sudah didefinisikan di konfigurasi
+
+```html
+<div x-flux="[
+    'transition duration-300',
+    'opacity-0 scale-90',
+    'opacity-100 scale-100',
+    'ease-out', 'ease-in',
+]">Ekspresi Array</div>
+
+<div x-flux="{
+    'enter': 'transition duration-300',
+    'enter-start': 'opacity-0 scale-90',
+    'enter-end': 'opacity-100 scale-100',
+    'leave': 'transition duration-300',
+    'leave-start': 'opacity-100 scale-100',
+    'leave-end': 'opacity-0 scale-90',
+}">Ekspresi Objek</div>
+
+<div x-flux="'opacity-scale'">Panggil Template</div>
+```
+
+### Magic `flux`
+
+#### `flux(templateName, newTemplate = null, applyToElement = true)`
+Digunakan untuk membuat template baru, atau memanggil template yang sudah didefinisikan di konfigurasi.
+
+Parameter | Tipe | Deskripsi
+--- | --- | ---
+`templateName` | `String` | Nama template, harus kebab-case
+`newTemplate` | `Array` atau `Object` | Template baru yang akan dibuat
+`applyToElement` | `Boolean` | Apakah template yang dibuat akan otomatis di terapkan pada elemen
+
+```js
+// Membuat template baru
+$flux('opacity-scale', [
+    'transition duration-300',
+    'opacity-0 scale-90',
+    'opacity-100 scale-100',
+    'ease-out', 'ease-in',
+]);
+
+// Memanggil template yang sudah didefinisikan di konfigurasi
+$flux('opacity-scale');
+```
+
+#### Magic dinamis
+Magic yang dibuat secara otomatis berdasarkan nama template yang sudah didefinisikan di konfigurasi.
+Digunakan untuk memanggil template yang sudah didefinisikan di konfigurasi.
+
+Tidak ada parameter yang harus diberikan.
+
+```html
+<div x-init="$opacityScale">Panggil Template</div>
+```
+
+```js
+Alpine.data('flux-demo', () => ({
+    init() {
+        this.$opacityScale();
+    }
+}));
 ```
 
 ## Stats
