@@ -4,9 +4,9 @@ import convertCamelCase from "./utils/convertCamelCase";
 
 export default function ( Alpine, Config ) {
     Alpine.directive( "flux", ( element, { expression }, { evaluate } ) => {
-        const arrayOrTemplateName = evaluate( expression );
-        const templateName = Array.isArray( arrayOrTemplateName ) ? "" : arrayOrTemplateName;
-        const template = templateName ? Config[templateName] : arrayOrTemplateName;
+        const inlineTemplateOrName = evaluate( expression );
+        const templateName = Array.isArray( inlineTemplateOrName ) ? "" : inlineTemplateOrName;
+        const template = templateName ? Config[templateName] : inlineTemplateOrName;
 
         applyTransitions( element, templateName, template );
     } ).before( "transition" );
