@@ -269,17 +269,24 @@ Parameter | Tipe | Deskripsi
 `newTemplate` | `Array` atau `Object` | Template baru yang akan dibuat
 `applyToElement` | `Boolean` | Apakah template yang dibuat akan otomatis di terapkan pada elemen
 
-```js
-// Membuat template baru
-$flux('opacity-scale', [
+```html
+<div x-init="$flux('opacity-scale', [
     'transition duration-300',
     'opacity-0 scale-90',
     'opacity-100 scale-100',
     'ease-out', 'ease-in',
-]);
+])">Ekspresi Array</div>
 
-// Memanggil template yang sudah didefinisikan di konfigurasi
-$flux('opacity-scale');
+<div x-init="$flux('opacity-scale', {
+    'enter': 'transition duration-300',
+    'enter-start': 'opacity-0 scale-90',
+    'enter-end': 'opacity-100 scale-100',
+    'leave': 'transition duration-300',
+    'leave-start': 'opacity-100 scale-100',
+    'leave-end': 'opacity-0 scale-90',
+})">Ekspresi Objek</div>
+
+<div x-init="$flux('opacity-scale')">Panggil Template</div>
 ```
 
 #### Magic dinamis
