@@ -34,7 +34,7 @@ Dalam perancangan awal, saya hanya terpikirkan untuk membuat satu directive saja
 >Ekspresi Array</div>
 ```
 
-Setelah pembuatan dan pengetesan, saya terpikirkan kalau ini apa bedanya dengan x-transition itu sendiri, masih sama saja menyalin dan tempel berulang kali dan terlebih lagi kalau ada elemen yang tipe transisi masuk/keluarnya berbeda misalnya ketika masuk elemennya berputar (rotate) dan ketika keluar perlahan menghilang (fade out), saya nantinya harus kembali menggunakan x-transition lagi yang ingin saya hindari. Jadi saya memutuskan untuk membuat sebuah konfigurasi global untuk menyimpan template-template yang dapat digunakan kembali di berbagai elemen.
+Setelah pembuatan dan pengetesan, saya terpikirkan kalau ini apa bedanya dengan x-transition itu sendiri, masih sama saja menyalin dan tempel berulang kali dan terlebih lagi kalau ada elemen yang tipe transisi masuk/keluarnya berbeda misalnya ketika masuk elemennya berputar (rotate) dan ketika keluar perlahan menghilang (fade out), saya nantinya harus kembali menggunakan `x-transition` lagi yang ingin saya hindari. Jadi saya memutuskan untuk membuat sebuah konfigurasi global untuk menyimpan nilai-nilai transisi sebagai template yang dapat digunakan kembali di berbagai elemen hanya dengan mereferensikan nama template tersebut.
 
 Kita bisa mendefinisikan sebuah template transisi ketika akan menginisialisasi plugin ini:
 
@@ -68,11 +68,11 @@ Dan terbitlah versi pertama plugin ini,
 
 [Lihat kode v1.0.0](https://github.com/iniznet/alpinejs-flux/blob/0a72f5f04a9e669dfb5249e4007abeaf6b954fa7/src/index.js)
 
-Sedikit beda dengan cara inisiasi plugin alpinejs lain pada umumnya, hal ini diperlukan ketika kita ingin meneruskan suatu argumen ke dalam plugin. Saya juga mendukung objek dalam mendefinisikan template untuk kefleksibilitasan dan sebagai solusi apabila ada elemen yang transisi masuk dan keluarnya berbeda.
+Sedikit beda dengan cara inisiasi plugin alpinejs lain pada umumnya, hal ini diperlukan ketika kita ingin meneruskan suatu argumen ke dalam plugin.
 
-Disini konfigurasi menggunakan nama template menggunakan aturan kebab-case dan tipe data objek daripada map karena map untuk penyimpanan skala kecil seperti ini tidak akan memberikan keuntungan apapun.
+Nama template di konfigurasi menggunakan aturan kebab-case dan tipe data objek daripada map karena untuk penyimpanan skala kecil, map tidak akan memberikan keuntungan apapun.
 
-Saya mendapat masukkan dari salah satu kontributor di alpinejs bahwasanya akan lebih praktis bila kita bisa menggunakan magic daripada directive `x-flux`. Saya setuju dengan masukannya dan saya menambahkan magic untuk menerapkan template yang sudah didefinisikan di konfigurasi. Magic ini didaftarkan secara dinamis dengan nama template yang didefinisikan diubah berdasarkan aturan camelCase.
+Saya mendapat masukkan dari salah satu kontributor di alpinejs bahwasanya akan lebih praktis bila kita bisa menggunakan magic daripada directive `x-flux`. Saya setuju dengan masukannya dan menambahkan magic untuk menerapkan template yang sudah didefinisikan di konfigurasi. Magic didaftarkan secara dinamis dengan nama template yang terdefinisikan dengan aturan camelCase.
 
 ```html
 <!-- Kamu bisa memanggil template yang sudah didefinisikan di konfigurasi -->
@@ -86,9 +86,20 @@ Saya mendapat masukkan dari salah satu kontributor di alpinejs bahwasanya akan l
 [Lihat kode v1.1.0](https://github.com/iniznet/alpinejs-flux/tree/ee1d073d4236dc8136c05ec264708996bcfb96b3/src) | 
 [Atau komparasi perubahan v1.0.0 > v1.1.0](https://github.com/iniznet/alpinejs-flux/compare/v1.0.0...v1.1.0)
 
-Saya menyarankan untuk memakai `x-flux` apabila elemen yang di tuju sudah memiliki `x-init` demi kemudahan dalam membaca, dan juga Saya rasa magic lebih cocok untuk digunakan pada elemen yang belum memiliki `x-init` atau berada di dalam method init pada `Alpine.data()`.
+Saya menyarankan untuk memakai `x-flux` apabila elemen yang di tuju sudah memiliki `x-init` demi kemudahan dalam membaca, dan juga saya rasa magic ini akan lebih cocok untuk digunakan pada elemen yang belum memiliki `x-init` atau terutama berada di dalam method init pada `Alpine.data()`.
 
-Lalu bagaimana cara kita memasukkan template baru apabila kita menggunakan CDN script daripada bundle module, cara tadi tentunya tidak bisa di terapkan karena memang keterbatasan apabila kita menggunakan CDN script. Untuk itu saya menambahkan magic `x-flux` yang dapat digunakan untuk menerapkan atau membuat template baru secara dinamis.
+```js
+Alpine.data('tooltip', () => ({
+    show: false,
+    init() {
+        this.$translateY2();
+        this.$flux('translate-y-2');
+    },
+    // ...
+}));
+```
+
+Lalu bagaimana cara kita memasukkan template baru apabila kita menggunakan CDN script daripada bundle module, cara sebelumnya tentunya tidak bisa di terapkan karena memang keterbatasan apabila kita menggunakan CDN script. Untuk itu saya menambahkan magic `$flux` yang dapat digunakan untuk menerapkan atau membuat template baru secara dinamis.
 
 ```html
 <section
@@ -104,6 +115,14 @@ Lalu bagaimana cara kita memasukkan template baru apabila kita menggunakan CDN s
 
     <!-- Secara bawaan template yang dibuat akan otomatis di terapkan pada elemen, kamu bisa menonaktifkan ini dengan memberikan nilai false pada parameter ketiga -->
     <div x-show="show" x-init="$flux('opacity-scale', template, false)">Ekspresi Array</div>
+
+    <!-- Kamu juga bisa membuat template dengan cara mengirimkan array/objek langsung -->
+    <div x-show="show" x-init="$flux('opacity-scale', [
+        'transition duration-300',
+        'opacity-0 scale-90',
+        'opacity-100 scale-100',
+        'ease-out', 'ease-in',
+    ])">Ekspresi Array</div>
 </section>
 ```
 
@@ -112,7 +131,7 @@ Saya baru kepikiran membuatkannya dengan patch v1.2.0 karena saya hampir tidak p
 [Lihat kode v1.2.0](https://github.com/iniznet/alpinejs-flux/commit/117ea12b02c7912149353dc9b5b18fb87ee1dd79) | 
 [Atau komparasi perubahan v1.1.0 > v1.2.0](https://github.com/iniznet/alpinejs-flux/compare/v1.1.0...v1.2.0)
 
-Lalu saya akhiri dengan perubahan terakhir v1.2.1 dan v1.2.2 (belum rilis) untuk membuat variable assigments di dalam directive `x-flux` dan kode menjadi lebih rapi dan mudah dibaca.
+Lalu saya akhiri dengan perubahan terakhir v1.2.1 dan v1.2.2 untuk membuat variable assigments di dalam directive `x-flux` dan kode menjadi lebih rapi dan mudah dibaca.
 
 [Cek komparasi perubahan v1.2.0 > v1.2.1](https://github.com/iniznet/alpinejs-flux/compare/v1.2.0...v1.2.1)
 [Cek komparasi perubahan v1.2.1 > v1.2.2](https://github.com/iniznet/alpinejs-flux/compare/v1.2.0...master)
@@ -144,7 +163,7 @@ Mungkin akan saya buat menjadi seperti ini:
 }
 ```
 
-Itu masih berupa ide, saya belum menentukan apakah akan saya terapkan atau tidak.
+Itu masih berupa ide, saya masih belum pasti apakah akan saya terapkan atau tidak.
 
 ## Install
 
@@ -258,9 +277,9 @@ Parameter | Tipe | Deskripsi
 <div x-flux="'opacity-scale'">Panggil Template</div>
 ```
 
-### Magic `flux`
+### Magic `$flux`
 
-#### `flux(templateName, newTemplate = null, applyToElement = true)`
+#### `$flux(templateName, newTemplate = null, applyToElement = true)`
 Digunakan untuk membuat template baru, atau memanggil template yang sudah didefinisikan di konfigurasi.
 
 Parameter | Tipe | Deskripsi
