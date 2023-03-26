@@ -1,7 +1,7 @@
 {
   "name": "alpinejs-flux",
-  "version": "1.2.2",
-  "description": "Simplifies the process of applying CSS classes with x-transition as a template and makes them reusable within single attribute.",
+  "version": "1.2.3",
+  "description": "Simplifies the process of applying CSS classes with x-transition by creating a reusable template within a single directive.",
   "keywords": [
     "Alpine",
     "Alpine JS",
