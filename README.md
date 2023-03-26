@@ -2,7 +2,7 @@
 
 English | [Indonesia](id_README.md)
 
-Simplifies the process of applying CSS classes with x-transition as a template and makes them reusable within single attribute.
+Simplifies the process of applying CSS classes with x-transition by creating a reusable template within a single directive.
 
 It requires alpinejs v3.11.0 or higher.
 
