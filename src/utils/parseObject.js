@@ -1,11 +1,7 @@
 export default function ( transitions ) {
-    let attributes = {};
+    return Object.entries(transitions).reduce((directives, [directiveValue, classes]) => {
+        directives[`x-transition:${directiveValue}`] = classes;
 
-    for ( const directiveValue in transitions ) {
-        const classes = transitions[directiveValue];
-
-        attributes[`x-transition:${directiveValue}`] = classes;
-    }
-
-    return attributes;
+        return directives;
+    }, {});
 }

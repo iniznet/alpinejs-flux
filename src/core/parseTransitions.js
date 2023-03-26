@@ -3,15 +3,11 @@ import parseObject from "../utils/parseObject";
 
 export default function ( templateName, template = null ) {
     if ( !template ) {
-        throw new Error( "x-flux: Template " + templateName + " does not exist in the config." );
+        throw new Error( `x-flux: Template ${templateName} does not exist.` );
     }
 
     try {
-        if ( Array.isArray( template ) ) {
-            return parseArray( template );
-        }
-
-        return parseObject( template );
+        return Array.isArray( template ) ? parseArray( template ) : parseObject( template );
     } catch ( error ) {
         throw new Error( "x-flux: Only accept array or object." );
     }
