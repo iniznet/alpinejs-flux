@@ -33,9 +33,9 @@ export default function ( Alpine, Config ) {
                 if ( !applyToElement ) {
                     return;
                 }
-                
+
                 const template = Config[templateName] || null;
-                
+
                 applyTransitions( element, templateName, template );
             }
     );
