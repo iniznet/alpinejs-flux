@@ -4,7 +4,7 @@
 
 [Codepen Demo](https://codepen.io/inizneti/pen/xxaaBmo?editors=1000)
 
-Menyederhanakan proses penerapan kelas-kelas CSS dengan x-transition sebagai template yang dapat digunakan secara berulang kali dalam satu atribut.
+Menyederhanakan proses penerapan kelas-kelas CSS di x-transition dengan membuat template yang dapat digunakan berulang kali dalam satu direktif.
 
 Diperlukan alpinejs v3.11.0 atau lebih tinggi.
 
