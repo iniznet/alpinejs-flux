@@ -215,6 +215,36 @@ Alpine.start()
 
 Ada beberapa cara untuk menggunakan plugin ini.
 
+### 1. Membuat template secara inline
+
+Panduan cara membuat template secara inline dan di terapkan pada elemen secara otomatis saat elemen tersebut di render.
+
+```html
+<section x-data="{ show: false }">
+    <button @click="show = !show">Toggle</button>
+
+    <!-- Kamu bisa membuat anonymous template secara inline dengan directive x-flux -->
+    <div x-show="show" x-flux="[
+        'transition duration-300',
+        'opacity-0 scale-90',
+        'opacity-100 scale-100',
+        'ease-out', 'ease-in',
+    ]">Anonymous Template</div>
+
+    <!-- (Masih Belum Di rilis ke npm! Jangan digunakan) Atau kamu juga bisa membuat anonymous template secara inline dengan magic $flux -->
+    <div x-show="show" x-init="$flux([
+        'transition duration-300',
+        'opacity-0 scale-90',
+        'opacity-100 scale-100',
+        'ease-out', 'ease-in',
+    ])">Anonymous Template</div>
+</section>
+```
+
+### 2. Membuat template di dalam x-data
+
+Panduan cara membuat template di dalam x-data dan memanggilnya dengan directive `x-flux` dan magic `$flux`.
+
 ```html
 <section x-data="{ show: false, template: [
         'transition duration-300',
@@ -224,30 +254,66 @@ Ada beberapa cara untuk menggunakan plugin ini.
     ] }">
     <button @click="show = !show">Toggle</button>
 
+    <!-- Kamu bisa membuat anonymous template di dalam x-data dan memanggilnya dengan ekspresi -->
+    <div x-show="show" x-flux="template">Anonymous Template</div>
+
+    <!-- (Masih Belum Di rilis ke npm! Jangan digunakan) Atau kamu juga bisa membuat anonymous template di dalam x-data dan memanggilnya dengan ekspresi dengan magic $template -->
+    <div x-show="show" x-init="$flux(template)">Anonymous Template</div>
+</section>
+```
+
+## 3. Membuat template di dalam konfigurasi
+
+Panduan cara membuat template di dalam konfigurasi dan memanggilnya dengan directive `x-flux`, magic `$flux` dan magic dinamis `$namaTemplate`.
+
+Magic dinamis ini terbuat secara otomatis saat kamu mendefinisikan sebuah template di dalam konfigurasi.
+
+```js
+import Alpine from 'alpinejs'
+import Flux from 'alpinejs-flux'
+
+Alpine.plugin(() => {
+    Flux(Alpine, {
+        // Kamu bisa menggunakan array untuk mendefinisikan template
+        "translate-y-2": [
+            "transition duration-300", // transition untuk enter dan leave
+            "opacity-0 scale-90 translate-y-2", // enter-start | leave-end
+            "opacity-100 scale-100 translate-y-0", // enter-end | leave-start
+            "ease-out", "ease-in" // enter, leave
+        ],
+        // Atau kamu juga bisa menggunakan objek sama seperti milik AlpineJS untuk mendefinisikan template
+        "rotate": {
+            "enter": "transition-all ease-in-out transform duration-300",
+            "enter-start": "opacity-0 scale-90",
+            "enter-end": "opacity-100 scale-100 rotate-180",
+            "leave": "transition-all ease-in-out transform duration-300",
+            "leave-start": "opacity-100 scale-100",
+            "leave-end": "opacity-0 scale-90"
+        }
+    });
+});
+
+Alpine.start()
+```
+
+```html
+<section x-data="{ show: false }">
+    <button @click="show = !show">Toggle</button>
+
     <!-- Kamu bisa memanggil template yang sudah didefinisikan di konfigurasi -->
     <div x-show="show" x-flux="'translate-y-2'">Array dari Konfigurasi</div>
     <div x-show="show" x-flux="'rotate'">Objek dari Konfigurasi</div>
 
     <!-- Atau kamu bisa gunakan magic -->
+    <div x-show="show" x-init="$flux('translate-y-2')">Array dari Konfigurasi</div>
+    <div x-show="show" x-init="$flux('rotate')">Objek dari Konfigurasi</div>
+
+    <!-- Atau kamu bisa gunakan magic dinamis -->
     <div x-show="show" x-init="$translateY2">Array dari Konfigurasi</div>
     <div x-show="show" x-init="$rotate">Objek dari Konfigurasi</div>
-    <div x-show="show" x-init="$flux('translate-y-2')">Array dari Konfigurasi</div>
-
-    <!-- Kamu juga bisa membuat anonymous template secara inline di dalam directive x-flux -->
-    <div x-show="show" x-flux="[
-        'transition duration-300',
-        'opacity-0 scale-90',
-        'opacity-100 scale-100',
-        'ease-out', 'ease-in',
-    ]">Ekspresi Array</div>
-
-    <!-- Kamu bisa membuat template melalui magic flux, aturan nama template harus kebab-case -->
-    <div x-show="show" x-init="$flux('opacity-scale', template)">Ekspresi Array</div>
-
-    <!-- Secara bawaan template yang dibuat akan otomatis di terapkan pada elemen, kamu bisa menonaktifkan ini dengan memberikan nilai false pada parameter ketiga -->
-    <div x-show="show" x-init="$flux('opacity-scale', template, false)">Ekspresi Array</div>
 </section>
 ```
+
 ## API Docs
 
 ### Directive `x-flux`
