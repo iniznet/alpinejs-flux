@@ -276,6 +276,8 @@ Panduan cara membuat template di dalam konfigurasi dan memanggilnya dengan direc
 
 Magic dinamis ini terbuat secara otomatis saat kamu mendefinisikan sebuah template di dalam konfigurasi dengan aturan nama Kebab Case.
 
+Perhatian: Cara ini tidak bisa digunakan apabila kamu menggunakan plugin ini dengan CDN.
+
 ```js
 import Alpine from 'alpinejs'
 import Flux from 'alpinejs-flux'
