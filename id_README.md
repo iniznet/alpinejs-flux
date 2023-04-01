@@ -94,8 +94,8 @@ Saya menyarankan untuk memakai `x-flux` apabila elemen yang di tuju sudah memili
 Alpine.data('tooltip', () => ({
     show: false,
     init() {
-        this.$translateY2();
-        this.$flux('translate-y-2');
+        this.$translateY2(); // pilih salah satu
+        this.$flux('translate-y-2'); // pilih salah satu
     },
     // ...
 }));
