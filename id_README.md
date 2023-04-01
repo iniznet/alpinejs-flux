@@ -231,6 +231,14 @@ Panduan cara membuat template secara inline dan di terapkan pada elemen secara o
         'ease-out', 'ease-in',
     ]">Anonymous Template</div>
 
+    <!-- Atau kamu juga bisa membuat anonymous template secara inline dengan magic $flux -->
+    <div x-show="show" x-init="$flux('', [
+        'transition duration-300',
+        'opacity-0 scale-90',
+        'opacity-100 scale-100',
+        'ease-out', 'ease-in',
+    ])">Anonymous Template</div>
+
     <!-- (Masih Belum Di rilis ke npm! Jangan digunakan) Atau kamu juga bisa membuat anonymous template secara inline dengan magic $flux -->
     <div x-show="show" x-init="$flux([
         'transition duration-300',
@@ -266,7 +274,7 @@ Panduan cara membuat template di dalam x-data dan memanggilnya dengan directive 
 
 Panduan cara membuat template di dalam konfigurasi dan memanggilnya dengan directive `x-flux`, magic `$flux` dan magic dinamis `$namaTemplate`.
 
-Magic dinamis ini terbuat secara otomatis saat kamu mendefinisikan sebuah template di dalam konfigurasi.
+Magic dinamis ini terbuat secara otomatis saat kamu mendefinisikan sebuah template di dalam konfigurasi dengan aturan nama Kebab Case.
 
 ```js
 import Alpine from 'alpinejs'
